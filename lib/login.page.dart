@@ -9,6 +9,8 @@ import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 
+import 'banco/FirebaseCustom.dart';
+
 class LoginPage extends StatelessWidget {
 
   TextEditingController controllerSenha = TextEditingController();
@@ -152,21 +154,13 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   onPressed: () async {
-                    // ignore: unrelated_type_equality_checks
-                    if(FlutterSession().get("email") == controllerEmail.text && FlutterSession().get("senha") == controllerSenha.text){
-                      print('logado');
-                      Navigator.push(
+                   
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => HomePage(),
                       ),
                     );
-                    } else {
-                      print('erro');
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      );
-                    }
                     
                   },
                 ),

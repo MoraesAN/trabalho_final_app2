@@ -1,3 +1,4 @@
+import 'package:app/CadastrarVaga.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -44,6 +45,18 @@ class HomePage extends StatelessWidget {
             cardItem(),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CadastraVagas(),
+                      ),
+                    );
+                    },
+        child: const Icon(Icons.add_box_sharp),
+        backgroundColor: Colors.green,
       ),
     );
   }

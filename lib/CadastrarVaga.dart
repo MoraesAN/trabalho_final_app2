@@ -16,6 +16,7 @@ class _CadastraVagasState extends State<CadastraVagas> {
   //Controladores dos TextFields
   TextEditingController controllerTitulo = TextEditingController();
   TextEditingController controllerData = TextEditingController();
+  TextEditingController controllerDescricao = TextEditingController();
   TextEditingController controllerEmpresa = TextEditingController();
   TextEditingController controllerLocal = TextEditingController();
   
@@ -79,47 +80,6 @@ class _CadastraVagasState extends State<CadastraVagas> {
               width: 200,
               height: 200,
               alignment: Alignment(0.0, 1.15),
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: AssetImage("imagens/profile-picture.png"),
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              child: Container(
-                height: 56,
-                width: 56,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1.0],
-                    colors: [
-                      Color(0xfF3C5c99),
-                      Color(0xFF3C3A99),
-                    ],
-                  ),
-                  border: Border.all(
-                    width: 4.0,
-                    color: const Color(0xFFFFFFFF),
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(56),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: FlatButton(
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
             ),
             TextFormField(
               // autofocus: true,
@@ -137,12 +97,44 @@ class _CadastraVagasState extends State<CadastraVagas> {
                 fontSize: 17,
               ),
             ),
+            TextFormField(
+              // autofocus: true,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelText: "Empresa",
+                labelStyle: TextStyle(
+                  color: Colors.black38,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                ),
+              ),
+              controller: controllerEmpresa,
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
             TextFormField(
               // autofocus: true,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelText: "Descrição",
+                labelStyle: TextStyle(
+                  color: Colors.black38,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                ),
+              ),
+              controller: controllerDescricao,
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+            TextFormField(
+              // autofocus: true,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Local",
                 labelStyle: TextStyle(
@@ -196,7 +188,7 @@ class _CadastraVagasState extends State<CadastraVagas> {
                     primary: Colors.deepPurpleAccent,
                   ),
                   onPressed: () {
-                    setVaga(controllerTitulo.text, controllerData.text, controllerEmpresa.text, controllerLocal.text);
+                    setVaga(controllerTitulo.text, controllerData.text, controllerDescricao.text, controllerEmpresa.text, controllerLocal.text);
                     Navigator.pop(context);
                   },
                 ),
@@ -223,13 +215,15 @@ class _CadastraVagasState extends State<CadastraVagas> {
   }
 }
 
-void setVaga(String titulo, String data, String empresa, String local){
+void setVaga(String titulo, String data, String descricao,String empresa, String local){
   String path = 'vaga';
   String id = Uuid().v4();
   FirebaseDatabaseWeb.instance.reference()
         .child(path).child(id).child("id").set(id);
   FirebaseDatabaseWeb.instance.reference()
         .child(path).child(id).child("titulo").set(titulo);
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("descricao").set(descricao);
   FirebaseDatabaseWeb.instance.reference()
         .child(path).child(id).child("data").set(data);
   FirebaseDatabaseWeb.instance.reference()
