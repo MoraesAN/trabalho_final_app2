@@ -2,14 +2,8 @@ import 'package:app/CadastraCandidato.dart';
 import 'package:app/CadastraEmpresa.dart';
 import 'package:app/reset-password.page.dart';
 import 'package:app/home.page.dart';
-import 'package:app/signup.page.dart';
-import 'package:firebase/firebase.dart';
-import 'package:firebase_db_web_unofficial/DatabaseSnapshot.dart';
-import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
 
-import 'banco/FirebaseCustom.dart';
 
 class LoginPage extends StatelessWidget {
 

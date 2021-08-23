@@ -6,31 +6,100 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple[200],
         title: Center(
           child: SizedBox(
             width: 40,
             child: Image.asset("imagens/user_picture.png"),
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black38,
-          onPressed: () => Navigator.pop(context, false),
-        ),
+        
         actions: <Widget>[
           Container(
             width: 60,
-            child: FlatButton(
+            child: TextButton(
               child: Icon(
                 Icons.search,
-                color: Color(0xFFBABABA),
+                color: Colors.white,
               ),
-              onPressed: () => {},
+              onPressed: () => {
+                 
+              },
             ),
           ),
         ],
       ),
+      drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 10)),
+               Container(
+                child: Center(
+                  child: Image.asset("imagens/user_picture.png"),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  "Home",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "Candidaturas",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Buscar vagas",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Empresas",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {},
+              ),
+              
+              Divider(),
+              ListTile(
+                title: Text(
+                  "Configurações",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
       body: Container(
         color: Color(0xFFF2F3F6),
         child: ListView(
