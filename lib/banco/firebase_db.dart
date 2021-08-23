@@ -1,9 +1,9 @@
 import 'package:app/Candidato.dart';
 import 'package:app/Empresa.dart';
+import 'package:app/Vagas.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'FirebaseCustom.dart';
-
 
 class FirebaseDB {
   //Criando um singleton da classe (usar a mesma instância para várias operações)
@@ -34,6 +34,33 @@ class FirebaseDB {
       print("Empresa cadastrada com sucesso!");
     } else {
       print("Empresa não cadastrada...");
+    }
+  }
+    void setValueVagas(Vagas vaga) {
+    String path = "vaga";
+    //Inserindo o valor recebido no parâmetro "produto"
+    //dentro do child "produtos" (definido no atributo "path" desta classe)
+    FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(vaga.titulo).child("titulo").set(vaga.titulo);
+
+    //Inserindo o valor recebido no parâmetro "preco"
+    //dentro do child "produtos" (definido no atributo "path" desta classe)
+    FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(vaga.titulo).child("local").set(vaga.local);
+
+    //Inserindo o valor recebido no parâmetro "qtde"
+    //dentro do child "produtos" (definido no atributo "path" desta classe)
+    FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(vaga.titulo).child("data").set(vaga.data);
+
+    FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(vaga.titulo).child("empresa").set(vaga.empresa);
+
+    if(FirebaseDatabaseWeb.instance.reference().child(path)
+        .child(vaga.titulo).key == vaga.titulo){
+      print("vaga cadastrada com sucesso!");
+    } else {
+      print("vaga não cadastrada...");
     }
   }
 
@@ -81,6 +108,25 @@ class FirebaseDB {
       DataSnapshot dadoAtual = data[i];
       //Convertendo dadoAtual para json, e depois para objeto Produto
       Empresa empresa = Empresa.fromJson(dadoAtual.toJson());
+      
+    }
+    return data;
+  }
+  Future<List> getValueVagas() async {
+    String path = "vaga";
+    //Capturado a referência (nó) principal
+    //(neste caso, o nó "produtos", definido na variável "path")
+    DatabaseReference dataRef = Fire.database.ref(path);
+    //"data" recebe uma lista com todos os sub-nós de produtos.
+    //getList é um método que está no arquivo FirebaseCustom.dart
+    List data = await getList(dataRef);
+    //Laço de repetição para ler todos os dados da lista "data"
+    for(int i=0; i<data.length; i++) {
+      //dadoAtual (DataSnapshot) receberá o valor
+      //de "data" no índice correspondente
+      DataSnapshot dadoAtual = data[i];
+      //Convertendo dadoAtual para json, e depois para objeto Produto
+      Vagas vaga = Vagas.fromJson(dadoAtual.toJson());
       
     }
     return data;

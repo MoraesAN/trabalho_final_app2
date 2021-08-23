@@ -1,75 +1,73 @@
-import 'package:uuid/uuid.dart';
-//Classe para trabalhar com objetos de Empresas
 
 class Vagas {
   //Atributos da classe (iguais aos do banco de dados)
-  String _id;
-  String _vaga;
-  String _preco;
-  String _qtde;
+  String _empresa;
+  String _titulo;
+  String _data;
+  String _local;
   static Vagas vagaEditar; //Atributo usado na edição
 
   //Construtor
-  Vagas(String vaga, String preco, String qtde){
-    this._id = Uuid().v4();
-    this._vaga = vaga;
-    this._preco = preco;
-    this._qtde = qtde;
+  Vagas(String empresa, String titulo, String local, String data){
+    this._empresa = empresa;
+    this._titulo = titulo;
+    this._data = data;
+    this._local = local;
   }
 
   //Construtor nomeado para edição de dados
-  Vagas.editar(String id, String vaga, String preco, String qtde){
-    this._id = id;
-    this._vaga = vaga;
-    this._preco = preco;
-    this._qtde = qtde;
+  Vagas.editar(String empresa, String titulo, String data, String local){
+    this._empresa = empresa;
+    this._titulo = titulo;
+    this._data = data;
+    this._local = local;
   }
 
   //Construtor nomeado que converte json para objeto
   Vagas.fromJson(Map<dynamic, dynamic> json)
-      : _id = json['id'],
-        _vaga = json['vaga'],
-        _preco = json['preco'],
-        _qtde = json['qtde'];
+      : _empresa = json['empresa'],
+        _titulo = json['titulo'],
+        _data = json['data'],
+        _local = json['local'];
 
   //Método que de um objeto do tipo Vagas retorna um Map (json)
   Map<dynamic, dynamic> toJson() => {
-    'id': _id,
-    'vaga': _vaga,
-    'preco': _preco,
-    'qtde': _qtde,
+    'empresa': _empresa,
+    'titulo': _titulo,
+    'data': _data,
+    'local': _local,
   };
 
   //Getter e Setters da classe
-  String get qtde => _qtde;
+  String get local => _local;
 
-  set qtde(String value) {
-    _qtde = value;
+  set local(String value) {
+    _local = value;
   }
 
-  String get preco => _preco;
+  String get data => _data;
 
-  set preco(String value) {
-    _preco = value;
+  set data(String value) {
+    _data = value;
   }
 
-  String get vaga => _vaga;
+  String get titulo => _titulo;
 
-  set vaga(String value) {
-    _vaga = value;
+  set titulo(String value) {
+    _titulo = value;
   }
 
   // ignore: unnecessary_getters_setters
-  String get id => _id;
+  String get empresa => _empresa;
 
   // ignore: unnecessary_getters_setters
-  set id(String value) {
-    _id = value;
+  set empresa(String value) {
+    _empresa = value;
   }
 
   //Método toString sobrescrito para a saída (output) de dados.
   @override
   String toString() {
-    return 'Id: $_id, Vagas: $_vaga, Preço: $_preco, Quantidade: $_qtde';
+    return 'empresa: $_empresa, Vaga: $_titulo, Data: $_data, local: $_local';
   }
 }

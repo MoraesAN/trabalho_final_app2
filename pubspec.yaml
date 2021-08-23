@@ -32,6 +32,7 @@ dependencies:
   firebase: ^9.0.1
   firebase_database: ^6.0.0
   firebase_db_web_unofficial: ^0.0.2
+  flutter_session: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,8 @@ flutter:
     - imagens/reset-password-icon.png
     - imagens/profile-picture.png
     - imagens/logos.png
+    - imagens/app-empresa.png
+    - imagens/user_picture.png
 
 
 

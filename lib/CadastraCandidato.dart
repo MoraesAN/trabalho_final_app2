@@ -1,5 +1,8 @@
 import 'package:app/login.page.dart';
+import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:uuid/uuid.dart';
 import 'Candidato.dart';
 import 'banco/firebase_db.dart';
 import 'ListaSuper.dart';
@@ -192,7 +195,7 @@ class _CadastraCandidatoState extends State<CadastraCandidato> {
                 ),
               ),
               child: SizedBox.expand(
-                child: FlatButton(
+                child: ElevatedButton(
                   child: Text(
                     "Cadastrar",
                     style: TextStyle(
@@ -201,10 +204,16 @@ class _CadastraCandidatoState extends State<CadastraCandidato> {
                       fontSize: 17,
                     ),
                     textAlign: TextAlign.center,
+                    
                   ),
-                  onPressed: () {
-                    _gravarDados();
-                    print("cheguei");
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.deepPurpleAccent,
+                  ),
+                  onPressed: () async {
+                    setCandidato(controllerNome.text, controllerEmail.text, controllerSenha.text);
+                    await FlutterSession().set("nome", controllerNome.text);
+                    await FlutterSession().set("email", controllerEmail.text);
+                    await FlutterSession().set("senha", controllerSenha.text);
                     Navigator.pop(context);
                   },
                 ),
@@ -229,4 +238,27 @@ class _CadastraCandidatoState extends State<CadastraCandidato> {
       ),
     );
   }
+}
+
+void setCandidato(String nome, String email, String senha){
+  String path = 'usuario';
+  String id = Uuid().v4();
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("id").set(id);
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("nome").set(nome);
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("email").set(email);
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("tipo").set('2');
+  FirebaseDatabaseWeb.instance.reference()
+        .child(path).child(id).child("senha").set(senha);
+  
+  if(FirebaseDatabaseWeb.instance.reference().child(path)
+        .child(id).key == id){
+      print("Cadastro Realizado com sucesso!");
+  } else {
+    print("Erro");
+  }
+
 }

@@ -1,10 +1,19 @@
 import 'package:app/CadastraCandidato.dart';
+import 'package:app/CadastraEmpresa.dart';
 import 'package:app/reset-password.page.dart';
 import 'package:app/home.page.dart';
 import 'package:app/signup.page.dart';
+import 'package:firebase/firebase.dart';
+import 'package:firebase_db_web_unofficial/DatabaseSnapshot.dart';
+import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 
 class LoginPage extends StatelessWidget {
+
+  TextEditingController controllerSenha = TextEditingController();
+  TextEditingController controllerEmail = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +61,7 @@ class LoginPage extends StatelessWidget {
             TextFormField(
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
+              controller: controllerEmail,
               decoration: InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
@@ -69,6 +79,7 @@ class LoginPage extends StatelessWidget {
               // autofocus: true,
               keyboardType: TextInputType.text,
               obscureText: true,
+              controller: controllerSenha,
               decoration: InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
@@ -125,7 +136,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               child: SizedBox.expand(
-                child: FlatButton(
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -140,13 +151,23 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    // ignore: unrelated_type_equality_checks
+                    if(FlutterSession().get("email") == controllerEmail.text && FlutterSession().get("senha") == controllerSenha.text){
+                      print('logado');
+                      Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => HomePage(),
                       ),
                     );
+                    } else {
+                      print('erro');
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      );
+                    }
+                    
                   },
                 ),
               ),
@@ -168,10 +189,12 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               height: 5,
             ),
-            Container(
-              child: FlatButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
                 child: Text(
-                  "Cadastrar-se como Candidato ou           Empresa/Recrutador",
+                  "Cadastrar-se como Candidato",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
@@ -188,6 +211,27 @@ class LoginPage extends StatelessWidget {
                   );
                 },
               ),
+              Padding(padding: EdgeInsets.only(right: 30)),
+              TextButton(
+                child: Text(
+                  "Cadastre-se como Recrutador",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                    fontSize: 13,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CadastraEmpresa(),
+                    ),
+                  );
+                },
+              ),
+              ],
             ),
             SizedBox(
               height: 20,

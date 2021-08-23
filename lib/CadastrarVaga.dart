@@ -1,52 +1,62 @@
-import 'package:app/login.page.dart';
+
 import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'Empresa.dart';
+import 'Vagas.dart';
 import 'banco/firebase_db.dart';
-import 'ListaSuper.dart';
 
-
-class CadastraEmpresa extends StatefulWidget {
-  CadastraEmpresa({Key key}) : super(key: key);
+class CadastraVagas extends StatefulWidget {
+  CadastraVagas({Key key}) : super(key: key);
 
   @override
-  _CadastraEmpresaState createState() => _CadastraEmpresaState();
+  _CadastraVagasState createState() => _CadastraVagasState();
 }
 
-class _CadastraEmpresaState extends State<CadastraEmpresa> {
+class _CadastraVagasState extends State<CadastraVagas> {
   //Controladores dos TextFields
-  TextEditingController controllerNome = TextEditingController();
-  TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerSenha = TextEditingController();
+  TextEditingController controllerTitulo = TextEditingController();
+  TextEditingController controllerData = TextEditingController();
+  TextEditingController controllerEmpresa = TextEditingController();
+  TextEditingController controllerLocal = TextEditingController();
+  
+  //Função que joga para os campos de texto os valores editáveis
+  /*voempresa editarDados(){
+    if(Vagas.vagaEditar != null) {
+      controllerNome.text = Vagas.vagaEditar.vaga;
+      controllerEmail.text = Vagas.vagaEditar.data;
+      controllerSenha.text = Vagas.vagaEditar.local;
+    }
+  }*/
 
   //Método que cria o objeto que será gravado no banco de dados.
   void _gravarDados(){
-    //Se for recebido de um objeto editável, chamará o construtor com id
-    if(Empresa.empresaEditar != null){
-      Empresa empresa = Empresa.editar(
-          Empresa.empresaEditar.id,
-          controllerNome.text,
-          controllerEmail.text,
-          controllerSenha.text
+    //Se for recebempresao de um objeto editável, chamará o construtor com empresa
+    if(Vagas.vagaEditar != null){
+      Vagas vaga = Vagas.editar(
+          Vagas.vagaEditar.empresa,
+          controllerTitulo.text,
+          controllerLocal.text,
+          controllerData.text
       );
-      FirebaseDB.firebaseDbInstance.setValueEmpresa(empresa);
-      Empresa.empresaEditar = null;
-      //Senão, se for recebido um objeto novo, chamará o construtor sem id
+      FirebaseDB.firebaseDbInstance.setValueVagas(vaga);
+      Vagas.vagaEditar = null;
+      //Senão, se for recebempresao um objeto novo, chamará o construtor sem empresa
     } else {
-      Empresa empresa = Empresa(
-          controllerNome.text,
-          controllerEmail.text,
-          controllerSenha.text
+      Vagas vaga = Vagas(
+          controllerEmpresa.text,
+          controllerTitulo.text,
+          controllerLocal.text,
+          controllerData.text
       );
       //Método setValue da instância da classe FirebaseDb.
-      FirebaseDB.firebaseDbInstance.setValueEmpresa(empresa);
+      FirebaseDB.firebaseDbInstance.setValueVagas(vaga);
     }
 
     //Limpa os dados após salvar.
-    controllerNome.clear();
-    controllerEmail.clear();
-    controllerSenha.clear();
+    controllerEmpresa.clear();
+    controllerTitulo.clear();
+    controllerLocal.clear();
+    controllerData.clear();
   }
 
   //initState para executar o método editarDados toda a vez que
@@ -115,14 +125,14 @@ class _CadastraEmpresaState extends State<CadastraEmpresa> {
               // autofocus: true,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                labelText: "Nome",
+                labelText: "Titulo",
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
                   fontSize: 17,
                 ),
               ),
-              controller: controllerNome,
+              controller: controllerTitulo,
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -134,14 +144,14 @@ class _CadastraEmpresaState extends State<CadastraEmpresa> {
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                labelText: "E-mail",
+                labelText: "Local",
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
                   fontSize: 17,
                 ),
               ),
-              controller: controllerEmail,
+              controller: controllerLocal,
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -149,21 +159,7 @@ class _CadastraEmpresaState extends State<CadastraEmpresa> {
             SizedBox(
               height: 10,
             ),
-            TextFormField(
-              // autofocus: true,
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: "Senha",
-                labelStyle: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
-              ),
-              controller: controllerSenha,
-              style: TextStyle(fontSize: 17),
-            ),
+            
             SizedBox(
               height: 40,
             ),
@@ -194,13 +190,13 @@ class _CadastraEmpresaState extends State<CadastraEmpresa> {
                       fontSize: 17,
                     ),
                     textAlign: TextAlign.center,
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.pinkAccent),
                     
                   ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.deepPurpleAccent,
+                  ),
                   onPressed: () {
-                    setEmpresa(controllerNome.text, controllerEmail.text, controllerSenha.text);
+                    setVaga(controllerTitulo.text, controllerData.text, controllerEmpresa.text, controllerLocal.text);
                     Navigator.pop(context);
                   },
                 ),
@@ -226,36 +222,25 @@ class _CadastraEmpresaState extends State<CadastraEmpresa> {
     );
   }
 }
-//Função que joga para os campos de texto os valores editáveis
-  /*void editarDados(){
-    if(Empresa.empresaEditar != null) {
-      controllerNome.text = Empresa.empresaEditar.empresa;
-      controllerEmail.text = Empresa.empresaEditar.preco;
-      controllerSenha.text = Empresa.empresaEditar.qtde;
-    }
-  }*/
-void setEmpresa(String nome, String email, String senha){
-  String path = 'usuario';
+
+void setVaga(String titulo, String data, String empresa, String local){
+  String path = 'vaga';
   String id = Uuid().v4();
   FirebaseDatabaseWeb.instance.reference()
         .child(path).child(id).child("id").set(id);
-
   FirebaseDatabaseWeb.instance.reference()
-        .child(path).child(id).child("nome").set(nome);
-
+        .child(path).child(id).child("titulo").set(titulo);
   FirebaseDatabaseWeb.instance.reference()
-        .child(path).child(id).child("email").set(email);
+        .child(path).child(id).child("data").set(data);
   FirebaseDatabaseWeb.instance.reference()
-        .child(path).child(id).child("tipo").set("1");
-
+        .child(path).child(id).child("empresa").set(empresa);
   FirebaseDatabaseWeb.instance.reference()
-        .child(path).child(id).child("senha").set(senha);
+        .child(path).child(id).child("local").set(local);
   
   if(FirebaseDatabaseWeb.instance.reference().child(path)
         .child(id).key == id){
-      print("Cadastro realizado com sucesso!");
+      print("Cadastro Realizado com sucesso!");
   } else {
     print("Erro");
   }
-
 }
